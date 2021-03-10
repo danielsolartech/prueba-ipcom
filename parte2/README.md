@@ -16,14 +16,20 @@ org1,daniel,admin
 
 2. Construir el archivo binario:
 ```sh
-go build main.go
+go build
 ```
 
 3. Ejecutar el siguiente comando:
 ```sh
-main [ruta-del-archivo]
+prueba-ipcom [ruta-del-archivo]
 ```
 Ejemplo:
 ```sh
-main ./examples/data.csv
+prueba-ipcom ./examples/data.csv
+```
+
+## Ejecutando los testeos
+1. Ejecutar el siguiente comando:
+```sh
+go test
 ```
