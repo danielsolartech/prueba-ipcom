@@ -13,7 +13,7 @@ Ejemplo:
 /resumen/2019-12-01?dias=5
 ```
 
-Respuesta exitosa:
+Respuesta exitosa (200):
 ```json
 {
     "total": 5717947.009999994,
@@ -32,6 +32,13 @@ Respuesta exitosa:
     },
     "noCompraron": 403,
     "compraMasAlta": 30342.72
+}
+```
+
+Respuesta de error (400):
+```json
+{
+    "mensaje": "Error"
 }
 ```
 
