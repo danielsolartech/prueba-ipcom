@@ -13,7 +13,7 @@ import (
 	"strings"
 )
 
-// User ...
+// User Estructura del usuario de la organización
 type User struct {
 	Username string   `json:"username"`
 	Roles    []string `json:"roles"`
@@ -32,7 +32,7 @@ func (user *User) AddRole(role string) {
 	user.Roles = append(user.Roles, role)
 }
 
-// Organization ...
+// Organization Estructura de la organización.
 type Organization struct {
 	Organization string  `json:"organization"`
 	Users        []*User `json:"users"`
@@ -57,7 +57,7 @@ func (org *Organization) AddUser(username string, role string) {
 	org.Users = append(org.Users, &User{username, []string{role}})
 }
 
-// CustomError ...
+// CustomError Estructura de errores personalizados.
 type CustomError struct {
 	Message string
 }
@@ -66,7 +66,8 @@ func (e CustomError) Error() string {
 	return e.Message
 }
 
-func readFile(filename string) (string, error) {
+// ReadFile Obtén el contenido de un archivo.
+func ReadFile(filename string) (string, error) {
 	// Verificamos que la extensión del archivo sea .csv
 	if filepath.Ext(filename) != ".csv" {
 		return "", CustomError{"El archivo debe ser de formato CSV."}
@@ -84,10 +85,17 @@ func readFile(filename string) (string, error) {
 		return "", err
 	}
 
-	return strings.TrimSpace(string(data)), nil
+	return strings.ReplaceAll(strings.TrimSpace(string(data)), "\r\n", "\n"), nil
 }
 
-func parseCSVtoJSON(content string) (string, error) {
+// ParseCSVtoJSON Convierte el contenido de un archivo CSV al formato JSON.
+// Este debe tener la siguiente estructura en cada registro:
+//
+// Organización,usuario,rol
+//
+// Ejemplo:
+// org1,daniel,admin
+func ParseCSVtoJSON(content string, indent string) (string, error) {
 	csvParsed := csv.NewReader(strings.NewReader(content))
 
 	var orgs []*Organization
@@ -141,7 +149,7 @@ func parseCSVtoJSON(content string) (string, error) {
 	}
 
 	// Pasar la lista de organizaciones al formato JSON.
-	jsonData, err := json.MarshalIndent(orgs, "", "  ")
+	jsonData, err := json.MarshalIndent(orgs, "", indent)
 	if err != nil {
 		return "", err
 	}
@@ -160,10 +168,10 @@ func main() {
 	filename := os.Args[1]
 
 	// Leemos el archivo .csv
-	content, err := readFile(filename)
+	content, err := ReadFile(filename)
 
 	// Convertir el contenido del CSV en JSON.
-	json, err := parseCSVtoJSON(content)
+	json, err := ParseCSVtoJSON(content, "  ")
 	if err != nil {
 		log.Print(err)
 		return
