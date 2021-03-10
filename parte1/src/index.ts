@@ -12,16 +12,16 @@ async function Main() {
     }
 
     // Obtenemos el host para el API desde las variables de entorno o el valor por defecto.
-    let host: string = process.env.API_HOST || "localhost";
+    const host: string = process.env.API_HOST || "localhost";
 
     // Obtenemos el port para el API desde las variables de entorno o el valor por defecto.
-    let port: number = Number(process.env.API_PORT) || 5000;
+    const port: number = Number(process.env.API_PORT) || 5000;
 
     // Iniciamos nuestra aplicación de ExpressJS.
-    let app: Express.Express = Express();
+    const app: Express.Express = Express();
 
     // Iniciamos nuestro controlador del resumen.
-    let resumen: ResumenController = new ResumenController();
+    const resumen: ResumenController = new ResumenController();
     app.use("/resumen", resumen.getRouter());
 
     // Ponemos a escuchar nuestro servidor y mandamos un mensaje si ha comenzado correctamente.

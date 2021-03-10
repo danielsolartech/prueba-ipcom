@@ -71,7 +71,7 @@ export class ResumenModel {
      * ```ts
      * const consulta: IResponse = await model.getByDate(2019, 12, 1);
      * ```
-     * Con esta línea estaremos solicitando un resumen del 1 de Enero de 2019.
+     * Con esta línea estaremos solicitando un resumen del 1 de Diciembre de 2019.
      *
      * @public
      * @function
@@ -111,7 +111,7 @@ export class ResumenModel {
      * ```ts
      * const consulta: IResponse = await model.getByDay({ year: 2019, month: 12, day: 1 }, 5);
      * ```
-     * Con esta línea estaremos solicitando un resumen del 1 de Enero de 2019 hasta el 5 de Enero de 2019.
+     * Con esta línea estaremos solicitando un resumen del 1 de Diciembre de 2019 hasta el 5 de Diciembre de 2019.
      *
      * @public
      * @function

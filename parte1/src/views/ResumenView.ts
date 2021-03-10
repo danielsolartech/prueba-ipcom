@@ -17,7 +17,19 @@ export class ResumenView {
      * @returns { void }
      */
     public fromDate(request: Request, response: Response): void {
-        const { year, month, day } = DateTime.fromISO(request.params.date);
+        const { date } = request.params;
+        if (!date) {
+            response.status(400).jsonp({ mensaje: "No se pudo obtener la fecha." });
+            return;
+        }
+
+        // Comprobamos que la fecha tenga el formato ISO (año-mes-día).
+        if (!(/^((\d{4})+-+(\d{1,2})+-+(\d{1,2}))$/g).test(date)) {
+            response.status(400).jsonp({ mensaje: "La fecha no tiene un formato válido." });
+            return;
+        }
+
+        const { year, month, day } = DateTime.fromISO(date);
 
         let data: Promise<IResponse>;
 
@@ -27,7 +39,10 @@ export class ResumenView {
 
             // Comprobamos que los días sean un número y mayor o igual a 1.
             if (isNaN(days) || days <= 0) {
-                response.status(400).send(`Los días a obtener deben ser mayor o igual a 1. Usa \`/resumen/${year}-${month}-${day}\`.`);
+                response.status(400).jsonp({
+                    mensaje: `Los días a obtener deben ser mayor o igual a 1. Usa \`/resumen/${year}-${month}-${day}\`.`
+                });
+
                 return;
             }
 
@@ -47,7 +62,7 @@ export class ResumenView {
                     return;
                 }
 
-                response.send("Error interno.");
+                response.jsonp({ mensaje: "Error interno." });
                 console.error("`/resumen/:date` Error:", e);
             });
     }
