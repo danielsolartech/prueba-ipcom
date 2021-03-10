@@ -66,3 +66,18 @@ npm start
 ```sh
 npm run start:dev
 ```
+
+## Ejecutando los testeos
+1. Iniciar el servidor:
+```sh
+npm start
+```
+o en desarrollo:
+```sh
+npm run start:dev
+```
+
+2. Ejecutar el siguiente comando:
+```sh
+npm run test
+```
