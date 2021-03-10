@@ -126,7 +126,7 @@ export class ResumenModel {
         }
 
         let responses: Promise<IResponse>[] = [];
-        for (let i = 0; i < days; i++) {
+        for (let i = 0; i <= days; i++) {
             // Obtenemos la fecha usando Luxo.
             let date: DateTime = DateTime.fromObject({ year, month, day });
 
