@@ -9,6 +9,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"path/filepath"
 	"strings"
 )
 
@@ -56,13 +57,34 @@ func (org *Organization) AddUser(username string, role string) {
 	org.Users = append(org.Users, &User{username, []string{role}})
 }
 
-// LenError ...
-type LenError struct {
+// CustomError ...
+type CustomError struct {
 	Message string
 }
 
-func (e LenError) Error() string {
+func (e CustomError) Error() string {
 	return e.Message
+}
+
+func readFile(filename string) (string, error) {
+	// Verificamos que la extensión del archivo sea .csv
+	if filepath.Ext(filename) != ".csv" {
+		return "", CustomError{"El archivo debe ser de formato CSV."}
+	}
+
+	// Obtenemos el directorio desde el cual estamos llamando nuestro ejecutable.
+	currentDirectory, err := os.Getwd()
+	if err != nil {
+		return "", err
+	}
+
+	// Leemos el archivo.
+	data, err := ioutil.ReadFile(path.Join(currentDirectory, filename))
+	if err != nil {
+		return "", err
+	}
+
+	return strings.TrimSpace(string(data)), nil
 }
 
 func parseCSVtoJSON(content string) (string, error) {
@@ -83,7 +105,7 @@ func parseCSVtoJSON(content string) (string, error) {
 		}
 
 		if len(data) != 3 {
-			return "", LenError{"Cada registro debe tener 3 campos: Organización, usuario y rol."}
+			return "", CustomError{"Cada registro debe tener 3 campos: Organización, usuario y rol."}
 		}
 
 		organizationName := strings.TrimSpace(data[0])
@@ -128,13 +150,6 @@ func parseCSVtoJSON(content string) (string, error) {
 }
 
 func main() {
-	// Obtenemos el directorio desde el cual estamos llamando nuestro ejecutable.
-	currentDirectory, err := os.Getwd()
-	if err != nil {
-		log.Print(err)
-		return
-	}
-
 	// Comprobamos si el número de argumentos es 1.
 	if len(os.Args) == 1 {
 		fmt.Print("Debes ingresar el nombre de un archivo .csv")
@@ -144,18 +159,11 @@ func main() {
 	// Obtenemos el segundo argumento como el nombre del archivo.
 	filename := os.Args[1]
 
-	// Leemos el archivo.
-	data, err := ioutil.ReadFile(path.Join(currentDirectory, filename))
-	if err != nil {
-		log.Print(err)
-		return
-	}
-
-	// Pasamos los datos del archivo de un Buffer a String.
-	csvContent := strings.TrimSpace(string(data))
+	// Leemos el archivo .csv
+	content, err := readFile(filename)
 
 	// Convertir el contenido del CSV en JSON.
-	json, err := parseCSVtoJSON(csvContent)
+	json, err := parseCSVtoJSON(content)
 	if err != nil {
 		log.Print(err)
 		return
