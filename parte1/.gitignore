@@ -1,5 +1,8 @@
 # NodeJS
 /node_modules/
 
+# Production
+/lib/
+
 # Development
 .env
