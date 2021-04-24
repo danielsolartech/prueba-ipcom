@@ -66,21 +66,21 @@ generar un json con la siguiente estructura:
 ```json
 [
   {
-    organization: "org1",
-    users: [
+    "organization": "org1",
+    "users": [
       {
-        username: "jperez",
-        roles: ["admin", "superadmin"]
+        "username": "jperez",
+        "roles": ["admin", "superadmin"]
       },
       {
-        username: "asosa",
-        roles: ["writer"]
+        "username": "asosa",
+        "roles": ["writer"]
       }
     ]
   }, 
   {
-    organization: "org2",
-    users: [],
+    "organization": "org2",
+    "users": [],
   }
 ]
 ```
