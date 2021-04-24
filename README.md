@@ -63,7 +63,7 @@ org2,rrodriguez,editor
 
 generar un json con la siguiente estructura:
 
-```
+```json
 [
   {
     organization: "org1",
